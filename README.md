@@ -1,0 +1,1 @@
+# filozofowie_sysopy
