@@ -1,12 +1,14 @@
 #!/bin/bash
 
-numer_fil=$1
-liczba_fil=$2
+NUMER_FILOZOFA=$1
+LICZBA_FILOZOFOW=$2
+LICZBA_POSILKOW=$3
+CZAS_KONSUMOWANIA=$4
+CZAS_ROZMYSLANIA=$5
 
 function komunikat(){ 
-echo "$($PWD/czas.sh) PID: $$ FILOZOF $numer_fil : "
+echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
 }
-
 
 
 
