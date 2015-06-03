@@ -1,9 +1,10 @@
 #!/bin/bash
-#sprawdzanie czy zmienna VAR jest pusta if [ -z "${VAR+xxx}
+#sprawdzanie czy zmienna VAR jest pusta if [ -z "${VAR+xxx}" ]
 SCIEZKA_STOLU=stol
 PREFIX_WIDELCA=widelec
 LICZBA_FILOZOFOW=5
 LICZBA_POSILKOW=9
+
 while getopts :s:w:f:n:k:r: ARG
 do
  case $ARG in
@@ -11,7 +12,7 @@ do
   w) PREFIX_WIDELCA=$OPTARG;;
   f) declare -i LICZBA_FILOZOFOW=$OPTARG;;
   n) declare -i LICZBA_POSILKOW=$OPTARG;;
-  k) declare -i CZAS_KONUMOWANIA=$OPTARG;;
+  k) declare -i CZAS_KONSUMOWANIA=$OPTARG;;
   r) declare -i CZAS_ROZMYSLANIA=$OPTARG;;
   *) echo Nieznana opcja $OPTARG; exit 2;;
  esac
@@ -38,7 +39,16 @@ done
 
 echo "$($PWD/czas.sh) PID: $$ uruchom.sh : Odpalam filozofów"
 
-for i in $(seq $LICZBA_FILOZOFOW)
-do
-    $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW &
-done
+if [ -z "${CZAS_KONSUMOWANIA+xxx}" ] ; then
+    for i in $(seq $LICZBA_FILOZOFOW)
+    do
+        CZAS_KONSUMOWANIA=0.$RANDOM
+        CZAS_ROZMYSLANIA=0.$RANDOM
+        $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW $LICZBA_POSILKOW $CZAS_KONSUMOWANIA $CZAS_ROZMYSLANIA &
+    done
+else
+    for i in $(seq $LICZBA_FILOZOFOW)
+    do
+        $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW $LICZBA_POSILKOW $CZAS_KONSUMOWANIA $CZAS_ROZMYSLANIA &
+    done
+fi    
