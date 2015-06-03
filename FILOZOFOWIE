@@ -1,0 +1,15 @@
+#!/bin/bash
+
+numer_fil=$1
+liczba_fil=$2
+
+function komunikat(){ 
+echo "$($PWD/czas.sh) PID: $$ FILOZOF $numer_fil : "
+}
+
+
+
+
+echo "$(komunikat) +++START+++"
+sleep 5
+echo "$(komunikat) +++STOP+++"
