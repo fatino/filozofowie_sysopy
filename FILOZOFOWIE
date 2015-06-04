@@ -11,14 +11,17 @@ zjadlem_polowe=0
 liczba_polownikow=0
 ##
 ##FUNKCJE
+#function losowanie(){
+#    if [ "$1" =
+#}
 function komunikat(){ 
     echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
 }
 
 function jedzenie(){
-    ##deskryptory?? nope
+    ##GL HF
     echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
-    flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem $CZAS_KONSUMOWANIA sekund;sleep $CZAS_KONSUMOWANIA;echo $(komunikat) Odkladam widelce i rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA\""
+    flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem $ZP posilek $CZAS_KONSUMOWANIA sekund;sleep $CZAS_KONSUMOWANIA;echo $(komunikat) zjadlem $ZP posilek wiec odkladam widelce: $pierwszy i $drugi oraz rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA;echo $(komunikat) Koniec Rozmyslania\""
 }
 ##
 ##Sprawdzam kim jestem i oznaczam kolejnosc brania widelcy
@@ -33,10 +36,18 @@ fi
 ##
 ##Zaczynam
 echo "$(komunikat) +++START+++"
-##
-for ZP in $(seq 0 $LICZBA_POSILKOW)
+echo "$(komunikat) Numer filozofa: $NUMER_FILOZOFA"
+echo "$(komunikat) Liczba filozofow: $LICZBA_FILOZOFOW"
+echo "$(komunikat) Liczba posilkow: $LICZBA_POSILKOW"
+echo "$(komunikat) Czas kosnumownia: $CZAS_KONSUMOWANIA"
+echo "$(komunikat) Czas rozmyslania: $CZAS_ROZMYSLANIA"
+echo "$(komunikat) Prefix widelca: $PREFIX_WIELCA"
+echo "$(komunikat) Sciezka stolu: $SCIEZKA_STOLU"
+##Wyswietlenie parametrow
+echo 
+for ZP in $(seq 1 $LICZBA_POSILKOW)
 do
-    if [[ "$ZP" -le "$(expr $LICZBA_POSILKOW / 2)" ]]
+    if [[ "$ZP" -le "$(expr $(expr $LICZBA_POSILKOW + 1) / 2)" ]]
     then
         jedzenie
     else
