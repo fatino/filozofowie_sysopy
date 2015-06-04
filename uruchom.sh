@@ -29,7 +29,7 @@ if [ ! -d "$SCIEZKA_STOLU" ]; then
   mkdir "$SCIEZKA_STOLU"
 fi
 
-
+touch kontrola_posilkow.txt
 
 
 for j in $(seq $LICZBA_FILOZOFOW)
