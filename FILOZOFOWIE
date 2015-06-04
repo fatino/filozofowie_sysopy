@@ -1,17 +1,53 @@
-#!/bin/bash
+#!/bin/bash 
 
 NUMER_FILOZOFA=$1
 LICZBA_FILOZOFOW=$2
 LICZBA_POSILKOW=$3
 CZAS_KONSUMOWANIA=$4
 CZAS_ROZMYSLANIA=$5
+PREFIX_WIELCA=$6
+SCIEZKA_STOLU=$7
 
+#function mojflock(){
+#echo "$(komunikat) Wzialem $PREFIX_WIELCA$pierwszy"
+#echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$drugi"
+#flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c 
 function komunikat(){ 
 echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
 }
 
+function jedzenie(){
+echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
+flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem;echo $(komunikat) Rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA\""
+}
 
 
-echo "$(komunikat) +++START+++"
-sleep 5
-echo "$(komunikat) +++STOP+++"
+
+
+if [ $NUMER_FILOZOFA -eq 1 ] 
+then
+    pierwszy=$LICZBA_FILOZOFOW
+    drugi=1
+else
+    pierwszy=$NUMER_FILOZOFA
+    drugi=$(expr $NUMER_FILOZOFA - 1)
+fi
+
+#echo "$(komunikat) +++START+++ PIERWSZY: $pierwszy DRUGI: $drugi"
+jedzenie
+#echo "$(komunikat) Jestem filozofem $NUMER_FILOZOFA"
+#flock $SCIEZKA_STOLU/$PREFIX_WIELCA$((NUMER_FILOZOFA+1)) -c 'flock $SCIEZKA_STOLU/$PREFIX_WIELCA$NUMER_FILOZOFA -c "echo \"$komunikat wzielem\""' 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#echo "$(komunikat) +++STOP+++"
