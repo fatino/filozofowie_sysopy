@@ -1,5 +1,5 @@
 #!/bin/bash 
-
+##ZMIENNE
 NUMER_FILOZOFA=$1
 LICZBA_FILOZOFOW=$2
 LICZBA_POSILKOW=$3
@@ -9,19 +9,19 @@ PREFIX_WIELCA=$6
 SCIEZKA_STOLU=$7
 zjadlem_polowe=0
 liczba_polownikow=0
-#function mojflock(){
-#echo "$(komunikat) Wzialem $PREFIX_WIELCA$pierwszy"
-#echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$drugi"
-#flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c 
+##
+##FUNKCJE
 function komunikat(){ 
-echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
+    echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
 }
 
 function jedzenie(){
-echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
-flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem $CZAS_KONSUMOWANIA sekund;sleep $CZAS_KONSUMOWANIA;echo $(komunikat) Odkladam widelce i rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA\""
+    ##deskryptory?? nope
+    echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
+    flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem $CZAS_KONSUMOWANIA sekund;sleep $CZAS_KONSUMOWANIA;echo $(komunikat) Odkladam widelce i rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA\""
 }
-
+##
+##Sprawdzam kim jestem i oznaczam kolejnosc brania widelcy
 if [ $NUMER_FILOZOFA -eq 1 ] 
 then
     pierwszy=$LICZBA_FILOZOFOW
@@ -30,8 +30,10 @@ else
     pierwszy=$NUMER_FILOZOFA
     drugi=$(expr $NUMER_FILOZOFA - 1)
 fi
-
-
+##
+##Zaczynam
+echo "$(komunikat) +++START+++"
+##
 for ZP in $(seq 0 $LICZBA_POSILKOW)
 do
     if [[ "$ZP" -le "$(expr $LICZBA_POSILKOW / 2)" ]]
@@ -41,6 +43,7 @@ do
         if [ $zjadlem_polowe -eq 0 ]
         then
             zjadlem_polowe=1
+            echo "$(komunikat) ---POLOWA---"
             echo 1 >> kontrola_posilkow.txt
         else
             while [[ "$liczba_polownikow" -lt "$LICZBA_FILOZOFOW" ]]
@@ -52,19 +55,4 @@ do
     fi
 done
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#echo "$(komunikat) +++STOP+++"
+echo "$(komunikat) +++STOP+++"
