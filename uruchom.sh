@@ -25,7 +25,8 @@ if [ ! -d "$SCIEZKA_STOLU" ]; then
 fi
 
 echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Touchuje kontrola_posilkow.txt"
-touch kontrola_posilkow.txt
+
+touch blokada.txt
 
 for j in $(seq $LICZBA_FILOZOFOW)
 do
@@ -53,7 +54,7 @@ read czysc
 case "$czysc" in
     [tT])
         rm $SCIEZKA_STOLU -r
-        rm kontrola_posilkow.txt;;
+        rm blokada.txt;;
     *)
     ;;
 esac    
