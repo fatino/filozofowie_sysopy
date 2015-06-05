@@ -18,13 +18,13 @@ do
     esac
 done
 
-echo "$($PWD/czas.sh) PID: $$ uruchom.sh : Generuje widelce"
+echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Generuje widelce"
 
 if [ ! -d "$SCIEZKA_STOLU" ]; then
     mkdir "$SCIEZKA_STOLU"
 fi
 
-echo "$($PWD/czas.sh) PID: $$ uruchom.sh : Touchuje kontrola_posilkow.txt"
+echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Touchuje kontrola_posilkow.txt"
 touch kontrola_posilkow.txt
 
 for j in $(seq $LICZBA_FILOZOFOW)
@@ -32,14 +32,12 @@ do
     touch $SCIEZKA_STOLU/$PREFIX_WIDELCA$j
 done
 
-echo "$($PWD/czas.sh) PID: $$ uruchom.sh : Odpalam filozofów"
+echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Odpalam filozofów"
 
 if [ -z "${CZAS_KONSUMOWANIA+xxx}" ] ; then
     for i in $(seq $LICZBA_FILOZOFOW)
     do
-        CZAS_KONSUMOWANIA=0.$RANDOM
-        CZAS_ROZMYSLANIA=0.$RANDOM
-        $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW $LICZBA_POSILKOW $CZAS_KONSUMOWANIA $CZAS_ROZMYSLANIA $PREFIX_WIDELCA $SCIEZKA_STOLU &
+        $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW $LICZBA_POSILKOW losuj losuj $PREFIX_WIDELCA $SCIEZKA_STOLU &
     done
 else
     for NUMER_FILOZOFA in $(seq $LICZBA_FILOZOFOW)
@@ -50,7 +48,7 @@ fi
 
 wait
 
-echo "$($PWD/czas.sh) PID: $$ uruchom.sh : Posprzatac?(Tt/anythingelse)"
+echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Posprzatac?(Tt/anythingelse)"
 read czysc
 case "$czysc" in
     [tT])
