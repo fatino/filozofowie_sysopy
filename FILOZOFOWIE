@@ -25,14 +25,14 @@ function komunikat(){
 
 function jedzenie(){
     echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
-    flock $pierwszy
+    flock $pierw
     echo "$(komunikat) Wzialem $PREFIX_WIELCA$pierwszy wiec probuje wziac $PREFIX_WIELCA$drugi"
-    flock $drugi
+    flock $drug
     echo "$(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec zaczynam jesc $ZP posilek  $1 sekund"
     sleep $1
     echo "$(komunikat) Zjadlem $ZP posilek wiec odstawiam widelce i rozmyslam $2 sekund"
-    flock -u $drugi
-    flock -u $pierwszy
+    flock -u $drug
+    flock -u $pierw
     sleep $2
     echo "$(komunikat) Namyslilem sie"
 }
@@ -47,8 +47,10 @@ else
     drugi=$(expr $NUMER_FILOZOFA - 1)
 fi
 ##Desykryptory
-eval "exec $pierwszy>$SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy"
-eval "exec $drugi>$SCIEZKA_STOLU/$PREFIX_WIELCA$drugi"
+pierw=$(expr $pierwszy + 2)
+drug=$(expr $drugi + 2)
+eval "exec $pierw>$SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy"
+eval "exec $drug>$SCIEZKA_STOLU/$PREFIX_WIELCA$drugi"
 
 ##Zaczynam
 echo "$(komunikat) +++START+++"
@@ -62,7 +64,7 @@ echo "$(komunikat) Sciezka stolu: $SCIEZKA_STOLU"
 echo "$(komunikat) Pierwszy widelec: $pierwszy"
 echo "$(komunikat) Drugi widelec: $drugi"
 
-echo 
+
 for ZP in $(seq 1 $LICZBA_POSILKOW)
 do
     if [[ "$ZP" -le "$(expr $(expr $LICZBA_POSILKOW + 1) / 2)" ]]
@@ -83,5 +85,10 @@ do
         fi
     fi
 done
+
+if [ "$LICZBA_POSILKOW" -eq 2 ]
+then
+    jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA) 
+fi
 
 echo "$(komunikat) +++STOP+++"
