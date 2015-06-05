@@ -86,6 +86,8 @@ done
 
 if [ "$LICZBA_POSILKOW" -eq 2 ]
 then
+    flock -x 3
+    flock -u 3
     jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA) 
 fi
 
