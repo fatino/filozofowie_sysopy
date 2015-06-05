@@ -47,11 +47,11 @@ else
     drugi=$(expr $NUMER_FILOZOFA - 1)
 fi
 ##Desykryptory
-pierw=$(expr $pierwszy + 2)
-drug=$(expr $drugi + 2)
+pierw=$(expr $pierwszy + 3)
+drug=$(expr $drugi + 3)
 eval "exec $pierw>$SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy"
 eval "exec $drug>$SCIEZKA_STOLU/$PREFIX_WIELCA$drugi"
-
+eval "exec 3>blokada.txt"
 ##Zaczynam
 echo "$(komunikat) +++START+++"
 echo "$(komunikat) Numer filozofa: $NUMER_FILOZOFA"
@@ -64,7 +64,7 @@ echo "$(komunikat) Sciezka stolu: $SCIEZKA_STOLU"
 echo "$(komunikat) Pierwszy widelec: $pierwszy"
 echo "$(komunikat) Drugi widelec: $drugi"
 
-
+flock -s 3 
 for ZP in $(seq 1 $LICZBA_POSILKOW)
 do
     if [[ "$ZP" -le "$(expr $(expr $LICZBA_POSILKOW + 1) / 2)" ]]
@@ -75,12 +75,10 @@ do
         then
             zjadlem_polowe=1
             echo "$(komunikat) ---POLOWA---"
-            echo 1 >> kontrola_posilkow.txt
+            flock -u 3
         else
-            while [[ "$liczba_polownikow" -lt "$LICZBA_FILOZOFOW" ]]
-            do
-                liczba_polownikow=$(wc -l < kontrola_posilkow.txt)
-            done
+            flock -x 3
+            flock -u 3
             jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA)
         fi
     fi
