@@ -91,4 +91,4 @@ then
     jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA) 
 fi
 
-echo "$(komunikat) +++STOP+++"
+echo "$(komunikat) ___STOP___"
