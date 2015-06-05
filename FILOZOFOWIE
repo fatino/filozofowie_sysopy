@@ -11,17 +11,30 @@ zjadlem_polowe=0
 liczba_polownikow=0
 ##
 ##FUNKCJE
-#function losowanie(){
-#    if [ "$1" =
-#}
+function losowanie(){
+    if [ "$1" = losuj ]
+    then
+        echo "0.$RANDOM"
+    else
+        echo "$1"
+    fi
+}
 function komunikat(){ 
-    echo "$($PWD/czas.sh) PID: $$ FILOZOF $NUMER_FILOZOFA : "
+    echo "$(date +%H:%M.%S.%N) PID: $$ FILOZOF $NUMER_FILOZOFA : "
 }
 
 function jedzenie(){
-    ##GL HF
     echo "$(komunikat) Probuje wziac $PREFIX_WIELCA$pierwszy"
-    flock $SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy -c "echo $(komunikat) Wzialem $PREFIX_WIELCA$pierwszy;echo $(komunikat) Probuje wziac $PREFIX_WIELCA$drugi;flock $SCIEZKA_STOLU/$PREFIX_WIELCA$drugi -c \"echo $(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec jem $ZP posilek $CZAS_KONSUMOWANIA sekund;sleep $CZAS_KONSUMOWANIA;echo $(komunikat) zjadlem $ZP posilek wiec odkladam widelce: $pierwszy i $drugi oraz rozmyslam $CZAS_ROZMYSLANIA sekund;sleep $CZAS_ROZMYSLANIA;echo $(komunikat) Koniec Rozmyslania\""
+    flock $pierwszy
+    echo "$(komunikat) Wzialem $PREFIX_WIELCA$pierwszy wiec probuje wziac $PREFIX_WIELCA$drugi"
+    flock $drugi
+    echo "$(komunikat) Wzialem $PREFIX_WIELCA$drugi wiec zaczynam jesc $ZP posilek  $1 sekund"
+    sleep $1
+    echo "$(komunikat) Zjadlem $ZP posilek wiec odstawiam widelce i rozmyslam $2 sekund"
+    flock -u $drugi
+    flock -u $pierwszy
+    sleep $2
+    echo "$(komunikat) Namyslilem sie"
 }
 ##
 ##Sprawdzam kim jestem i oznaczam kolejnosc brania widelcy
@@ -33,7 +46,10 @@ else
     pierwszy=$NUMER_FILOZOFA
     drugi=$(expr $NUMER_FILOZOFA - 1)
 fi
-##
+##Desykryptory
+eval "exec $pierwszy>$SCIEZKA_STOLU/$PREFIX_WIELCA$pierwszy"
+eval "exec $drugi>$SCIEZKA_STOLU/$PREFIX_WIELCA$drugi"
+
 ##Zaczynam
 echo "$(komunikat) +++START+++"
 echo "$(komunikat) Numer filozofa: $NUMER_FILOZOFA"
@@ -43,13 +59,15 @@ echo "$(komunikat) Czas kosnumownia: $CZAS_KONSUMOWANIA"
 echo "$(komunikat) Czas rozmyslania: $CZAS_ROZMYSLANIA"
 echo "$(komunikat) Prefix widelca: $PREFIX_WIELCA"
 echo "$(komunikat) Sciezka stolu: $SCIEZKA_STOLU"
-##Wyswietlenie parametrow
+echo "$(komunikat) Pierwszy widelec: $pierwszy"
+echo "$(komunikat) Drugi widelec: $drugi"
+
 echo 
 for ZP in $(seq 1 $LICZBA_POSILKOW)
 do
     if [[ "$ZP" -le "$(expr $(expr $LICZBA_POSILKOW + 1) / 2)" ]]
     then
-        jedzenie
+        jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA)
     else
         if [ $zjadlem_polowe -eq 0 ]
         then
@@ -61,7 +79,7 @@ do
             do
                 liczba_polownikow=$(wc -l < kontrola_posilkow.txt)
             done
-            jedzenie
+            jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA)
         fi
     fi
 done
