@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 #sprawdzanie czy zmienna VAR jest pusta if [ -z "${VAR+xxx}" ]
 SCIEZKA_STOLU=stol
 PREFIX_WIDELCA=widelec
@@ -35,9 +35,9 @@ done
 echo "$(date +%H:%M.%S.%N) PID: $$ uruchom.sh : Odpalam filozofów"
 
 if [ -z "${CZAS_KONSUMOWANIA+xxx}" ] ; then
-    for i in $(seq $LICZBA_FILOZOFOW)
+    for NUMER_FILOZOFA in $(seq $LICZBA_FILOZOFOW)
     do
-        $PWD/FILOZOFOWIE $i $LICZBA_FILOZOFOW $LICZBA_POSILKOW losuj losuj $PREFIX_WIDELCA $SCIEZKA_STOLU &
+        $PWD/FILOZOFOWIE $NUMER_FILOZOFA $LICZBA_FILOZOFOW $LICZBA_POSILKOW losuj losuj $PREFIX_WIDELCA $SCIEZKA_STOLU &
     done
 else
     for NUMER_FILOZOFA in $(seq $LICZBA_FILOZOFOW)
@@ -57,4 +57,3 @@ case "$czysc" in
     *)
     ;;
 esac    
-    
