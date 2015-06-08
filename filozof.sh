@@ -84,7 +84,7 @@ do
     fi
 done
 
-if [ "$LICZBA_POSILKOW" -eq 2 ]
+if [ "$LICZBA_POSILKOW" -eq 2 ] || [ "$LICZBA_POSILKOW" -eq 3 ]
 then
     flock -x 3
     flock -u 3
