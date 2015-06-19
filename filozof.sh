@@ -76,6 +76,9 @@ do
             zjadlem_polowe=1
             echo "$(komunikat) ---POLOWA---"
             flock -u 3
+            flock -x 3
+            flock -u 3
+            jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA)
         else
             flock -x 3
             flock -u 3
@@ -84,11 +87,6 @@ do
     fi
 done
 
-if [ "$LICZBA_POSILKOW" -eq 2 ] || [ "$LICZBA_POSILKOW" -eq 3 ]
-then
-    flock -x 3
-    flock -u 3
-    jedzenie $(losowanie $CZAS_KONSUMOWANIA) $(losowanie $CZAS_ROZMYSLANIA) 
-fi
+
 
 echo "$(komunikat) ___STOP___"
